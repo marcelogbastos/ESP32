@@ -1,0 +1,1628 @@
+/* =========================================
+   NEW FACES - CSS Expressions
+   Compatível com style.css base
+   ========================================= */
+
+/* Face 01 - Normal */
+.face-screen.new-01 .eye {
+    width: 35px;
+    height: 35px;
+    animation: breathe 3s infinite ease-in-out;
+}
+.face-screen.new-01 .mouth {
+    display: block;
+    width: 20px;
+    height: 10px;
+    border-bottom: 3px solid var(--eye-color);
+    border-radius: 0 0 20px 20px;
+    box-shadow: var(--eye-glow);
+}
+@keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Face 02 - Feliz */
+.face-screen.new-02 .eye {
+    height: 12px;
+    border-radius: 20px 20px 0 0;
+    transform: translateY(5px);
+    animation: happy-blink 2s infinite;
+}
+.face-screen.new-02 .mouth {
+    display: block;
+    width: 25px;
+    height: 12px;
+    background: var(--eye-color);
+    border-radius: 0 0 25px 25px;
+    box-shadow: var(--eye-glow);
+}
+@keyframes happy-blink {
+    0%, 90%, 100% { height: 12px; }
+    95% { height: 3px; }
+}
+
+/* Face 03 - Muito Feliz */
+.face-screen.new-03 .eye {
+    height: 15px;
+    border-radius: 25px 25px 0 0;
+    transform: translateY(3px);
+}
+.face-screen.new-03 .mouth {
+    display: block;
+    width: 40px;
+    height: 20px;
+    background: var(--eye-color);
+    border-radius: 0 0 40px 40px;
+    box-shadow: var(--eye-glow);
+    animation: laugh 1.5s infinite;
+}
+@keyframes laugh {
+    0%, 100% { transform: translateX(-50%) scaleY(1); }
+    50% { transform: translateX(-50%) scaleY(1.1); }
+}
+
+/* Face 04 - Piscando */
+.face-screen.new-04 .left-eye {
+    width: 30px;
+    height: 30px;
+}
+.face-screen.new-04 .right-eye {
+    width: 0;
+    height: 0;
+    border-left: 20px solid var(--eye-color);
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-radius: 0;
+    box-shadow: none;
+    filter: drop-shadow(0 0 8px var(--eye-color));
+    animation: wink 2s infinite;
+}
+.face-screen.new-04 .mouth {
+    display: block;
+    width: 15px;
+    height: 8px;
+    border-bottom: 3px solid var(--eye-color);
+    border-radius: 0 0 15px 15px;
+}
+@keyframes wink {
+    0%, 80%, 100% { opacity: 1; }
+    85%, 95% { opacity: 0.3; }
+}
+
+/* Face 05 - Rindo */
+.face-screen.new-05 .eye {
+    height: 10px;
+    border-radius: 15px 15px 0 0;
+    transform: translateY(8px);
+}
+.face-screen.new-05 .mouth {
+    display: block;
+    width: 45px;
+    height: 25px;
+    background: var(--eye-color);
+    border-radius: 0 0 45px 45px;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 06 - Normal 2 */
+.face-screen.new-06 .eye {
+    width: 32px;
+    height: 32px;
+}
+.face-screen.new-06 .mouth {
+    display: block;
+    width: 18px;
+    height: 12px;
+    border: 3px solid var(--eye-color);
+    border-top: none;
+    border-radius: 0 0 18px 18px;
+}
+
+/* Face 07 - Beijando */
+.face-screen.new-07 .eye {
+    height: 10px;
+    border-radius: 15px 15px 0 0;
+}
+.face-screen.new-07 .mouth {
+    display: block;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    color: var(--eye-color);
+    text-shadow: var(--eye-glow);
+    line-height: 20px;
+    text-align: center;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+.face-screen.new-07 .mouth::after {
+    content: '3';
+}
+
+/* Face 08 - Estrelado */
+.face-screen.new-08 .eye {
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: relative;
+}
+.face-screen.new-08 .eye::before {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: var(--eye-color);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.face-screen.new-08 .mouth {
+    display: block;
+    width: 20px;
+    height: 10px;
+    background: var(--eye-color);
+    border-radius: 20px;
+}
+
+/* Face 10 - Brilhante */
+.face-screen.new-10 .eye {
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: relative;
+}
+.face-screen.new-10 .eye::before {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: var(--eye-color);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    box-shadow: var(--eye-glow);
+    animation: sparkle 1.5s infinite;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.face-screen.new-10 .mouth {
+    display: block;
+    width: 22px;
+    height: 12px;
+    background: var(--eye-color);
+    border-radius: 22px;
+}
+@keyframes sparkle {
+    0%, 100% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+    50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.1); }
+}
+
+/* Face 11 - Chateado */
+.face-screen.new-11 .eye {
+    width: 35px;
+    height: 10px;
+    border-radius: 10px;
+    transform: translateY(5px);
+}
+.face-screen.new-11 .mouth {
+    display: block;
+    width: 25px;
+    height: 12px;
+    border-top: 4px solid var(--eye-color);
+    border-radius: 25px 25px 0 0;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 12 - Dentuço */
+.face-screen.new-12 .eye {
+    width: 30px;
+    height: 8px;
+    border-radius: 8px;
+}
+.face-screen.new-12 .mouth {
+    display: block;
+    width: 50px;
+    height: 30px;
+    background: var(--eye-color);
+    border-radius: 0 0 25px 25px;
+    box-shadow: var(--eye-glow);
+    overflow: hidden;
+    position: absolute;
+}
+.face-screen.new-12 .mouth::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 100%;
+    background: repeating-linear-gradient(90deg, var(--face-bg, #000) 0px, var(--face-bg, #000) 6px, transparent 6px, transparent 10px);
+}
+
+/* Face 13 - Apaixonado */
+.face-screen.new-13 .eye {
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: relative;
+}
+.face-screen.new-13 .eye::before {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: var(--eye-color);
+    clip-path: path('M15 28 C15 28 2 18 2 10 C2 5 6 2 10 2 C13 2 15 4 15 4 C15 4 17 2 20 2 C24 2 28 5 28 10 C28 18 15 28 15 28Z');
+    box-shadow: var(--eye-glow);
+    animation: heartbeat 1.2s infinite;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.face-screen.new-13 .mouth {
+    display: block;
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: absolute;
+}
+.face-screen.new-13 .mouth::before {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: var(--eye-color);
+    clip-path: path('M12.5 24 C12.5 24 2 16 2 9 C2 4 5 2 8 2 C10 2 12.5 4 12.5 4 C12.5 4 15 2 17 2 C20 2 23 4 23 9 C23 16 12.5 24 12.5 24Z');
+    box-shadow: var(--eye-glow);
+    animation: heartbeat 1.2s infinite;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+@keyframes heartbeat {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    15% { transform: translate(-50%, -50%) scale(1.15); }
+    30% { transform: translate(-50%, -50%) scale(1); }
+    45% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+/* Face 14 - Espirrando */
+.face-screen.new-14 .eye {
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: relative;
+}
+.face-screen.new-14 .left-eye::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(-30deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+    transform-origin: center;
+}
+.face-screen.new-14 .left-eye::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(30deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+    transform-origin: center;
+}
+.face-screen.new-14 .right-eye::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(30deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+    transform-origin: center;
+}
+.face-screen.new-14 .right-eye::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(-30deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+    transform-origin: center;
+}
+.face-screen.new-14 .mouth {
+    display: block;
+    width: 15px;
+    height: 15px;
+    background: var(--eye-color);
+    border-radius: 50%;
+    box-shadow: var(--eye-glow);
+    animation: sneeze 2s infinite;
+}
+@keyframes sneeze {
+    0%, 80%, 100% { transform: translateX(-50%) scale(1); }
+    85% { transform: translateX(-50%) scale(1.3); }
+    90% { transform: translateX(-50%) scale(0.8); }
+}
+
+/* Face 15 - Bravo */
+.face-screen.new-15 .eye {
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: relative;
+}
+.face-screen.new-15 .left-eye::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(-30deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-15 .left-eye::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(30deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-15 .right-eye::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(30deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-15 .right-eye::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(-30deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-15 .mouth {
+    display: block;
+    width: 25px;
+    height: 15px;
+    border-top: 5px solid var(--eye-color);
+    border-radius: 25px 25px 0 0;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 16 - Surpreso O */
+.face-screen.new-16 .eye {
+    height: 8px;
+    border-radius: 10px 10px 0 0;
+    transform: translateY(5px);
+}
+.face-screen.new-16 .mouth {
+    display: block;
+    width: 30px;
+    height: 30px;
+    background: var(--eye-color);
+    border-radius: 50%;
+    box-shadow: var(--eye-glow);
+    animation: oh 2s infinite;
+}
+@keyframes oh {
+    0%, 100% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.1); }
+}
+
+/* Face 17 - Preocupado */
+.face-screen.new-17 .eye {
+    width: 28px;
+    height: 28px;
+}
+.face-screen.new-17 .mouth {
+    display: block;
+    width: 18px;
+    height: 10px;
+    border-top: 3px solid var(--eye-color);
+    border-radius: 18px 18px 0 0;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 18 - Bigode */
+.face-screen.new-18 .eye {
+    width: 30px;
+    height: 8px;
+    border-radius: 8px;
+}
+.face-screen.new-18 .mouth {
+    display: block;
+    width: 30px;
+    height: 12px;
+    background: var(--eye-color);
+    border-radius: 0 0 15px 15px;
+    box-shadow: var(--eye-glow);
+    position: absolute;
+}
+.face-screen.new-18 .mouth::before,
+.face-screen.new-18 .mouth::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    width: 18px;
+    height: 10px;
+    background: var(--eye-color);
+    border-radius: 50%;
+}
+.face-screen.new-18 .mouth::before { left: -8px; }
+.face-screen.new-18 .mouth::after { right: -8px; }
+
+/* Face 19 - Bigode 2 */
+.face-screen.new-19 .eye {
+    width: 28px;
+    height: 7px;
+    border-radius: 7px;
+}
+.face-screen.new-19 .mouth {
+    display: block;
+    width: 25px;
+    height: 10px;
+    background: var(--eye-color);
+    border-radius: 0 0 12px 12px;
+    box-shadow: var(--eye-glow);
+    position: absolute;
+}
+.face-screen.new-19 .mouth::before,
+.face-screen.new-19 .mouth::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    width: 15px;
+    height: 8px;
+    background: var(--eye-color);
+    border-radius: 50%;
+}
+.face-screen.new-19 .mouth::before { left: -6px; }
+.face-screen.new-19 .mouth::after { right: -6px; }
+
+/* Face 21 - Chorando */
+.face-screen.new-21 .eye {
+    height: 10px;
+    border-radius: 15px 15px 0 0;
+}
+.face-screen.new-21 .eye::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    right: 5px;
+    width: 8px;
+    height: 12px;
+    background: var(--eye-color);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: tear 1.5s infinite;
+}
+.face-screen.new-21 .right-eye::after {
+    right: auto;
+    left: 5px;
+    animation-delay: 0.3s;
+}
+.face-screen.new-21 .mouth {
+    display: block;
+    width: 15px;
+    height: 15px;
+    background: var(--eye-color);
+    border-radius: 50%;
+    box-shadow: var(--eye-glow);
+    position: absolute;
+}
+.face-screen.new-21 .mouth::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 3px;
+    height: 10px;
+    background: #000;
+}
+@keyframes tear {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(15px); opacity: 0; }
+}
+
+/* Face 22 - Surpreso */
+.face-screen.new-22 .eye {
+    width: 28px;
+    height: 8px;
+    border-radius: 8px;
+}
+.face-screen.new-22 .mouth {
+    display: block;
+    width: 22px;
+    height: 22px;
+    background: var(--eye-color);
+    border-radius: 50%;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 23 - Nervoso */
+.face-screen.new-23 .eye {
+    width: 28px;
+    height: 8px;
+    border-radius: 8px;
+}
+.face-screen.new-23 .mouth {
+    display: block;
+    width: 20px;
+    height: 10px;
+    background: var(--eye-color);
+    border-radius: 0 0 10px 10px;
+    box-shadow: var(--eye-glow);
+    position: absolute;
+}
+.face-screen.new-23 .mouth::before,
+.face-screen.new-23 .mouth::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    width: 8px;
+    height: 8px;
+    background: var(--eye-color);
+    border-radius: 50%;
+}
+.face-screen.new-23 .mouth::before { left: -10px; }
+.face-screen.new-23 .mouth::after { right: -10px; }
+
+/* Face 24 - Feliz Grande */
+.face-screen.new-24 .eye {
+    height: 12px;
+    border-radius: 18px 18px 0 0;
+}
+.face-screen.new-24 .mouth {
+    display: block;
+    width: 40px;
+    height: 22px;
+    background: var(--eye-color);
+    border-radius: 0 0 40px 40px;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 25 - Tonto */
+.face-screen.new-25 .eye {
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: relative;
+}
+.face-screen.new-25 .eye::before {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border: 5px solid var(--eye-color);
+    border-radius: 50%;
+    border-top-color: transparent;
+    box-shadow: var(--eye-glow);
+    animation: spin 2s infinite linear;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.face-screen.new-25 .mouth {
+    display: block;
+    width: 20px;
+    height: 8px;
+    background: transparent;
+    border-bottom: 4px solid var(--eye-color);
+    border-radius: 0 0 20px 20px;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 26 - Suando */
+.face-screen.new-26 .eye {
+    width: 28px;
+    height: 8px;
+    border-radius: 8px;
+}
+.face-screen.new-26 .mouth {
+    display: block;
+    width: 20px;
+    height: 12px;
+    border-top: 4px solid var(--eye-color);
+    border-radius: 20px 20px 0 0;
+    box-shadow: var(--eye-glow);
+}
+.face-screen.new-26 .face-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    width: 10px;
+    height: 15px;
+    background: var(--eye-color);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: sweat 1.5s infinite;
+    box-shadow: var(--eye-glow);
+}
+@keyframes sweat {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(20px); opacity: 0; }
+}
+
+/* Face 27 - Triste */
+.face-screen.new-27 .eye {
+    width: 28px;
+    height: 8px;
+    border-radius: 8px;
+}
+.face-screen.new-27 .mouth {
+    display: block;
+    width: 20px;
+    height: 8px;
+    border-top: 3px solid var(--eye-color);
+    border-radius: 20px 20px 0 0;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 28 - Irritado */
+.face-screen.new-28 .eye {
+    width: 28px;
+    height: 8px;
+    border-radius: 8px;
+}
+.face-screen.new-28 .mouth {
+    display: block;
+    width: 22px;
+    height: 12px;
+    background: var(--eye-color);
+    border-radius: 0 0 11px 11px;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 30 - Sorrindo */
+.face-screen.new-30 .eye {
+    height: 12px;
+    border-radius: 18px 18px 0 0;
+}
+.face-screen.new-30 .mouth {
+    display: block;
+    width: 42px;
+    height: 20px;
+    background: var(--eye-color);
+    border-radius: 0 0 42px 42px;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 31 - Feliz */
+.face-screen.new-31 .eye {
+    height: 14px;
+    border-radius: 20px 20px 0 0;
+}
+.face-screen.new-31 .mouth {
+    display: block;
+    width: 45px;
+    height: 22px;
+    background: var(--eye-color);
+    border-radius: 0 0 45px 45px;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 32 - Malvado */
+.face-screen.new-32 .eye {
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: relative;
+}
+.face-screen.new-32 .eye::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 18px solid var(--eye-color);
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    box-shadow: var(--eye-glow);
+    filter: drop-shadow(0 0 5px var(--eye-color));
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.face-screen.new-32 .right-eye::before {
+    transform: translate(-50%, -50%) scaleX(-1);
+}
+.face-screen.new-32 .mouth {
+    display: block;
+    width: 35px;
+    height: 18px;
+    background: var(--eye-color);
+    border-radius: 0 0 35px 35px;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 33 - Triste com Lágrima */
+.face-screen.new-33 .eye {
+    width: 28px;
+    height: 28px;
+}
+.face-screen.new-33 .right-eye::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    right: 2px;
+    width: 8px;
+    height: 12px;
+    background: var(--eye-color);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: tear 1.5s infinite;
+}
+.face-screen.new-33 .mouth {
+    display: block;
+    width: 18px;
+    height: 10px;
+    border-top: 3px solid var(--eye-color);
+    border-radius: 18px 18px 0 0;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 34 - Surpreso Uau */
+.face-screen.new-34 .eye {
+    height: 10px;
+    border-radius: 15px 15px 0 0;
+}
+.face-screen.new-34 .mouth {
+    display: block;
+    width: 25px;
+    height: 28px;
+    background: var(--eye-color);
+    border-radius: 0 0 25px 25px;
+    box-shadow: var(--eye-glow);
+    position: absolute;
+}
+.face-screen.new-34 .mouth::before {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 15px;
+    height: 8px;
+    background: #000;
+    border-radius: 50%;
+}
+
+/* Face 35 - Óculos */
+.face-screen.new-35 .eye {
+    width: 28px;
+    height: 8px;
+    border-radius: 8px;
+}
+.face-screen.new-35 .mouth {
+    display: block;
+    width: 35px;
+    height: 20px;
+    border: 5px solid var(--eye-color);
+    border-radius: 8px;
+    box-shadow: var(--eye-glow);
+    position: absolute;
+}
+.face-screen.new-35 .mouth::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 5px;
+    height: 10px;
+    background: var(--eye-color);
+}
+
+/* Face 37 - Bravo */
+.face-screen.new-37 .eye {
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: relative;
+}
+.face-screen.new-37 .eye::before {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 12px;
+    background: var(--eye-color);
+    border-radius: 0 0 25px 25px;
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.face-screen.new-37 .mouth {
+    display: block;
+    width: 30px;
+    height: 15px;
+    background: var(--eye-color);
+    border-radius: 0 0 15px 15px;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 38 - Muito Bravo */
+.face-screen.new-38 .eye {
+    width: 25px;
+    height: 25px;
+}
+.face-screen.new-38 .eye::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 0;
+    width: 30px;
+    height: 6px;
+    background: var(--eye-color);
+    border-radius: 3px;
+    box-shadow: var(--eye-glow);
+}
+.face-screen.new-38 .left-eye::before { transform: rotate(-15deg); }
+.face-screen.new-38 .right-eye::before { transform: rotate(15deg); }
+.face-screen.new-38 .mouth {
+    display: block;
+    width: 22px;
+    height: 15px;
+    border-top: 5px solid var(--eye-color);
+    border-radius: 22px 22px 0 0;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 39 - Malvado O */
+.face-screen.new-39 .eye {
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: relative;
+}
+.face-screen.new-39 .eye::before {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 15px;
+    background: var(--eye-color);
+    border-radius: 0 0 22px 22px;
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.face-screen.new-39 .mouth {
+    display: block;
+    width: 18px;
+    height: 18px;
+    background: var(--eye-color);
+    border-radius: 50%;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 40 - Tonto Espiral */
+.face-screen.new-40 .eye {
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: relative;
+}
+.face-screen.new-40 .eye::before {
+    content: '';
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border: 5px solid var(--eye-color);
+    border-radius: 50%;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    box-shadow: var(--eye-glow);
+    animation: spiral 1.5s infinite linear;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.face-screen.new-40 .mouth {
+    display: block;
+    width: 18px;
+    height: 6px;
+    background: transparent;
+    border-bottom: 3px solid var(--eye-color);
+    border-radius: 0 0 18px 18px;
+    box-shadow: var(--eye-glow);
+}
+@keyframes spiral {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Face 41 - Coração Partido */
+.face-screen.new-41 .eye {
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: relative;
+}
+.face-screen.new-41 .eye::before {
+    content: '';
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    background: var(--eye-color);
+    clip-path: polygon(
+        20% 0%, 40% 0%, 50% 15%, 60% 0%, 80% 0%, 
+        100% 20%, 100% 50%, 50% 100%, 0% 50%, 0% 20%
+    );
+    box-shadow: var(--eye-glow);
+    animation: broken-heart 2s infinite;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.face-screen.new-41 .mouth {
+    display: block;
+    width: 20px;
+    height: 10px;
+    border-top: 3px solid var(--eye-color);
+    border-radius: 20px 20px 0 0;
+    box-shadow: var(--eye-glow);
+}
+@keyframes broken-heart {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(0.95); }
+}
+
+/* Face 42 - Dormindo */
+.face-screen.new-42 .eye {
+    height: 8px;
+    border-radius: 12px 12px 0 0;
+    transform: translateY(5px);
+}
+.face-screen.new-42 .mouth {
+    display: block;
+    width: 25px;
+    height: 15px;
+    background: var(--eye-color);
+    border-radius: 0 0 25px 25px;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 43 - Bigode Bravo */
+.face-screen.new-43 .eye {
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: relative;
+}
+.face-screen.new-43 .left-eye::before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(-25deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-43 .left-eye::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(25deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-43 .right-eye::before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(25deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-43 .right-eye::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(-25deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-43 .mouth {
+    display: block;
+    width: 35px;
+    height: 15px;
+    background: var(--eye-color);
+    border-radius: 0 0 17px 17px;
+    box-shadow: var(--eye-glow);
+    position: absolute;
+}
+.face-screen.new-43 .mouth::before,
+.face-screen.new-43 .mouth::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    width: 20px;
+    height: 12px;
+    background: var(--eye-color);
+    border-radius: 50%;
+}
+.face-screen.new-43 .mouth::before { left: -10px; }
+.face-screen.new-43 .mouth::after { right: -10px; }
+
+/* Face 44 - Surpreso Pequeno */
+.face-screen.new-44 .eye {
+    width: 28px;
+    height: 28px;
+}
+.face-screen.new-44 .mouth {
+    display: block;
+    width: 18px;
+    height: 12px;
+    background: var(--eye-color);
+    border-radius: 0 0 9px 9px;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 45 - Nervoso Olhos */
+.face-screen.new-45 .eye {
+    width: 28px;
+    height: 28px;
+    position: relative;
+}
+.face-screen.new-45 .eye::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background: #000;
+    border-radius: 50%;
+}
+.face-screen.new-45 .mouth {
+    display: block;
+    width: 20px;
+    height: 8px;
+    background: transparent;
+    border-bottom: 4px solid var(--eye-color);
+    border-radius: 0 0 20px 20px;
+    box-shadow: var(--eye-glow);
+    animation: wave 1s infinite;
+}
+@keyframes wave {
+    0%, 100% { transform: translateX(-50%); }
+    25% { transform: translateX(calc(-50% - 3px)); }
+    75% { transform: translateX(calc(-50% + 3px)); }
+}
+
+/* Face 47 - Feliz Ondulado */
+.face-screen.new-47 .eye {
+    height: 8px;
+    border-radius: 12px 12px 0 0;
+}
+.face-screen.new-47 .eye::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 0;
+    width: 20px;
+    height: 6px;
+    background: var(--eye-color);
+    border-radius: 10px;
+    box-shadow: var(--eye-glow);
+}
+.face-screen.new-47 .mouth {
+    display: block;
+    width: 25px;
+    height: 10px;
+    background: transparent;
+    border-bottom: 4px solid var(--eye-color);
+    border-radius: 0 0 25px 25px;
+    box-shadow: var(--eye-glow);
+    animation: wiggle 1s infinite;
+}
+@keyframes wiggle {
+    0%, 100% { transform: translateX(-50%) rotate(0deg); }
+    25% { transform: translateX(-50%) rotate(-5deg); }
+    75% { transform: translateX(-50%) rotate(5deg); }
+}
+
+/* Face 48 - Malvado Surpreso */
+.face-screen.new-48 .eye {
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: relative;
+}
+.face-screen.new-48 .eye::before {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 15px;
+    background: var(--eye-color);
+    border-radius: 0 0 22px 22px;
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.face-screen.new-48 .mouth {
+    display: block;
+    width: 18px;
+    height: 18px;
+    background: var(--eye-color);
+    border-radius: 50%;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 49 - Bravo O */
+.face-screen.new-49 .eye {
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: relative;
+}
+.face-screen.new-49 .eye::before {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 10px;
+    background: var(--eye-color);
+    border-radius: 0 0 25px 25px;
+    box-shadow: var(--eye-glow);
+    transform: rotate(-15deg);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-49 .right-eye::before {
+    transform: rotate(15deg);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-49 .mouth {
+    display: block;
+    width: 18px;
+    height: 18px;
+    background: var(--eye-color);
+    border-radius: 5px;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 50 - Bravo O 2 */
+.face-screen.new-50 .eye {
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: relative;
+}
+.face-screen.new-50 .eye::before {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 10px;
+    background: var(--eye-color);
+    border-radius: 0 0 25px 25px;
+    box-shadow: var(--eye-glow);
+    transform: rotate(-20deg);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-50 .right-eye::before {
+    transform: rotate(20deg);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-50 .mouth {
+    display: block;
+    width: 18px;
+    height: 18px;
+    background: var(--eye-color);
+    border-radius: 5px;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 51 - Surpreso Triste */
+.face-screen.new-51 .eye {
+    width: 28px;
+    height: 28px;
+}
+.face-screen.new-51 .mouth {
+    display: block;
+    width: 18px;
+    height: 12px;
+    background: var(--eye-color);
+    border-radius: 0 0 9px 9px;
+    box-shadow: var(--eye-glow);
+    position: absolute;
+}
+.face-screen.new-51 .mouth::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 6px;
+    background: #000;
+    border-radius: 0 0 6px 6px;
+}
+
+/* Face 52 - Bigode Triste */
+.face-screen.new-52 .eye {
+    width: 28px;
+    height: 8px;
+    border-radius: 8px;
+}
+.face-screen.new-52 .mouth {
+    display: block;
+    width: 25px;
+    height: 15px;
+    background: var(--eye-color);
+    border-radius: 0 0 12px 12px;
+    box-shadow: var(--eye-glow);
+    position: absolute;
+}
+.face-screen.new-52 .mouth::before,
+.face-screen.new-52 .mouth::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    width: 8px;
+    height: 8px;
+    background: var(--eye-color);
+    border-radius: 50%;
+}
+.face-screen.new-52 .mouth::before { left: 2px; }
+.face-screen.new-52 .mouth::after { right: 2px; }
+
+/* Face 53 - Chocado */
+.face-screen.new-53 .eye {
+    width: 28px;
+    height: 15px;
+    border-radius: 15px;
+    border: 4px solid var(--eye-color);
+    background: transparent;
+    box-shadow: var(--eye-glow);
+}
+.face-screen.new-53 .mouth {
+    display: block;
+    width: 30px;
+    height: 18px;
+    border: 5px solid var(--eye-color);
+    border-radius: 15px;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 54 - Triste */
+.face-screen.new-54 .eye {
+    width: 30px;
+    height: 30px;
+}
+.face-screen.new-54 .mouth {
+    display: block;
+    width: 25px;
+    height: 8px;
+    border-top: 3px solid var(--eye-color);
+    border-radius: 25px 25px 0 0;
+    box-shadow: var(--eye-glow);
+}
+
+/* Face 55 - Chorando */
+.face-screen.new-55 .eye {
+    height: 10px;
+    border-radius: 15px 15px 0 0;
+}
+.face-screen.new-55 .mouth {
+    display: block;
+    width: 18px;
+    height: 18px;
+    background: var(--eye-color);
+    border-radius: 0 0 9px 9px;
+    box-shadow: var(--eye-glow);
+    position: absolute;
+}
+.face-screen.new-55 .mouth::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 8px;
+    background: #000;
+    border-radius: 0 0 5px 5px;
+}
+
+/* Face 57 - Morto X */
+.face-screen.new-57 .eye {
+    width: 28px;
+    height: 12px;
+    border-radius: 15px 15px 0 0;
+}
+.face-screen.new-57 .mouth {
+    display: block;
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: absolute;
+}
+.face-screen.new-57 .mouth::before,
+.face-screen.new-57 .mouth::after {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 4px;
+    background: var(--eye-color);
+    border-radius: 2px;
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-57 .mouth::before { transform: translate(-50%, -50%) rotate(45deg); }
+.face-screen.new-57 .mouth::after { transform: translate(-50%, -50%) rotate(-45deg); }
+
+/* Face 58 - Chorando Espiral */
+.face-screen.new-58 .eye {
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: relative;
+}
+.face-screen.new-58 .eye::before {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border: 4px solid var(--eye-color);
+    border-radius: 50%;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    box-shadow: var(--eye-glow);
+    animation: spiral 1.5s infinite linear;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.face-screen.new-58 .mouth {
+    display: block;
+    width: 20px;
+    height: 15px;
+    background: var(--eye-color);
+    border-radius: 0 0 10px 10px;
+    box-shadow: var(--eye-glow);
+    position: absolute;
+}
+.face-screen.new-58 .mouth::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 8px;
+    background: #000;
+    border-radius: 0 0 6px 6px;
+}
+
+/* Face 59 - Bravo Bigode */
+.face-screen.new-59 .eye {
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: relative;
+}
+.face-screen.new-59 .left-eye::before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(-25deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-59 .left-eye::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(25deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-59 .right-eye::before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(25deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-59 .right-eye::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(-25deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-59 .mouth {
+    display: block;
+    width: 25px;
+    height: 15px;
+    background: var(--eye-color);
+    border-radius: 0 0 12px 12px;
+    box-shadow: var(--eye-glow);
+    position: absolute;
+}
+.face-screen.new-59 .mouth::before,
+.face-screen.new-59 .mouth::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    width: 15px;
+    height: 10px;
+    background: var(--eye-color);
+    border-radius: 50%;
+}
+.face-screen.new-59 .mouth::before { left: -8px; }
+.face-screen.new-59 .mouth::after { right: -8px; }
+
+/* Face 60 - Bravo Bigode 2 */
+.face-screen.new-60 .eye {
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    position: relative;
+}
+.face-screen.new-60 .left-eye::before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(-25deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-60 .left-eye::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(25deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-60 .right-eye::before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(25deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-60 .right-eye::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 4px;
+    background: var(--eye-color);
+    transform: rotate(-25deg);
+    box-shadow: var(--eye-glow);
+    top: 50%;
+    left: 50%;
+}
+.face-screen.new-60 .mouth {
+    display: block;
+    width: 25px;
+    height: 15px;
+    background: var(--eye-color);
+    border-radius: 0 0 12px 12px;
+    box-shadow: var(--eye-glow);
+    position: absolute;
+}
+.face-screen.new-60 .mouth::before,
+.face-screen.new-60 .mouth::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    width: 15px;
+    height: 10px;
+    background: var(--eye-color);
+    border-radius: 50%;
+}
+.face-screen.new-60 .mouth::before { left: -8px; }
+.face-screen.new-60 .mouth::after { right: -8px; }

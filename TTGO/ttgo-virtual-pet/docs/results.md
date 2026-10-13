@@ -6,3 +6,11 @@
 - Testes C++ executados: atributos, moedas, sono, limites, evolucao, recuperacao, remedio e rejeicao de estados invalidos aprovados.
 - ZIP conferido com firmware e fontes.
 - Validacao fisica de tela, botoes e NVS pendente; firmware nao foi gravado automaticamente.
+
+## Animacoes 1.1.0 — 13/10/2026
+
+Cuidados com animacoes independentes de temporizacao: comer, brincar, banho e remedio. Testes C++ cobrem inicio, termino, reentrada e rollover de millis, alem das regras existentes do pet. Build aprovado com RAM estatica de aproximadamente 22 KB e imagem de aproximadamente 317 KB. Aparencia e fluidez na tela ainda precisam de validacao fisica apos upload; nao houve gravacao automatica.
+
+## Versao 2.0 — 13/10/2026
+
+Build aprovado: imagem 328.993 bytes, RAM estatica 22.428 bytes (6,8%), sprite dinamico 32.400 bytes. Testes C++ aprovados para migracao v1, preservacao de idade/moedas/atributos/sono, humores, evolucao condicionada a cuidados, variantes adultas, objetivos, resgate unico, troca de dia ligado, compras sem cobranca duplicada, personalizacao e duracao de animacoes. Home possui somente personagem e efeitos; controles em telas auxiliares. PWM e aparencia final precisam de validacao na placa. Firmware nao foi gravado automaticamente.
