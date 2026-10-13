@@ -11,7 +11,9 @@ bool Pet::restore(const PetState& value) {
       value.accessory > 3 || value.owned > 15 || !(value.owned & 1) || !(value.owned & (1u << value.accessory)) ||
       value.feedsToday > 2 || value.playsToday > 2 || value.bathsToday > 1 || value.restToday > 5 || value.claimed > 1 ||
       value.careMinutes > value.ageMinutes || value.sleepMinutes > value.ageMinutes) return false;
-  state_ = value; syncDay(); return true;
+  state_ = value;
+  for (uint8_t& byte : state_.reserved) byte = 0;
+  syncDay(); return true;
 }
 bool Pet::migrate(const LegacyPetState& value) {
   if (value.version != 1 || !validBase(value.remainderSeconds, value.coins, value.food, value.energy, value.joy, value.hygiene, value.health)) return false;
@@ -108,4 +110,24 @@ Result Pet::buy(uint8_t accessory) {
     state_.coins -= prices[accessory]; state_.owned |= 1u << accessory;
   }
   state_.accessory = accessory; return Result::Done;
+}
+Result Pet::canPlayGame() const {
+  if (state_.sleeping) return Result::Asleep;
+  return state_.energy < 8 ? Result::NoEnergy : Result::Done;
+}
+void Pet::finishGame(uint8_t hits) {
+  if (canPlayGame() != Result::Done) return;
+  if (hits > 3) hits = 3;
+  state_.energy = adjust(state_.energy, -8); state_.joy = adjust(state_.joy, 5 + hits * 4);
+  addCoins(hits * 2 + (hits == 3 ? 1 : 0)); state_.bond = adjust(state_.bond, 1); increment(state_.plays);
+}
+bool Pet::applyEvent(Event event) {
+  if (state_.sleeping) return false;
+  switch (event) {
+    case Event::FoundCoins: addCoins(3); break;
+    case Event::Cuddle: state_.joy = adjust(state_.joy, 10); state_.bond = adjust(state_.bond, 1); break;
+    case Event::Mess: state_.hygiene = adjust(state_.hygiene, -15); break;
+    case Event::Count: return false;
+  }
+  return true;
 }

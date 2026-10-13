@@ -9,6 +9,6 @@ foreach ($name in @('platformio.ini','.gitignore','README.md','docs','include','
 }
 $firmware = Join-Path $root '.pio/build/ttgo-virtual-pet/firmware.bin'
 if (Test-Path -LiteralPath $firmware) { Copy-Item -LiteralPath $firmware -Destination $staging }
-$archive = Join-Path $output 'ttgo-virtual-pet-2.0.0.zip'
+$archive = Join-Path $output 'ttgo-virtual-pet-2.1.0.zip'
 Compress-Archive -Path (Join-Path $staging '*') -DestinationPath $archive -Force
 Write-Output $archive

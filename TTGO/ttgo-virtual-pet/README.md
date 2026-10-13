@@ -1,6 +1,6 @@
 # TTGO Virtual Pet
 
-**Versão do firmware: 2.0.0** · **Formato do progresso: 2**
+**Versão do firmware: 2.1.0** · **Formato do progresso: 2**
 
 Bichinho virtual para a **LILYGO TTGO T-Display clássica**, com ESP32, tela ST7789 e dois botões. A tela inicial mostra o nome no topo, o personagem centralizado com suas animações e a idade na parte inferior. Cuidados, indicadores, objetivos e personalização ficam em telas separadas.
 
@@ -48,8 +48,10 @@ Leia o [Manual ilustrado do usuário](docs/manual-do-usuario.md): primeiros pass
 | Formas adultas | Carinhosa, tranquila, ativa ou clássica, com paleta automática própria |
 | Objetivos | Quatro metas por dia de uso, com recompensa de moedas |
 | Personalização | Oito nomes, seis opções de cor e três acessórios compráveis |
-| Persistência | Progresso salvo na NVS; migração de versões 1.x |
-| Economia | Redução de brilho e frequência de renderização por inatividade |
+| Mini-jogo | “Ponto certo”: três rodadas de timing que rendem moedas e alegria |
+| Eventos | A cada 10–20 minutos acordado, na tela inicial: achar moedas, ganhar carinho ou fazer bagunça |
+| Persistência | Progresso salvo na NVS com CRC e backup; migração de versões 1.x; `dump`/`restore` pela serial |
+| Economia | Redução de brilho, renderização e clock da CPU por inatividade; light sleep opcional |
 
 Não há morte permanente: mesmo com saúde zero, o pet pode ser recuperado com cuidados.
 
@@ -145,7 +147,7 @@ Prefira o cache global do PlatformIO no Windows. Caminhos muito longos para o co
 ### Log esperado
 
 ```text
-TTGO Virtual Pet 2.0.0 / display=240x135 NVS=OK idade=0
+TTGO Virtual Pet 2.1.0 / display=240x135 NVS=OK idade=0h00m
 ```
 
 A idade pode ser diferente de zero quando houver progresso salvo. O log confirma inicialização do software; cores, brilho, botões e aparência precisam da conferência física.
@@ -198,11 +200,12 @@ Durante uma animação de cuidado, comandos de navegação/ação são **ignorad
 3. Banho.
 4. Dormir ou acordar.
 5. Remédio.
-6. Estatísticas.
-7. Objetivos.
-8. Personalizar.
-9. Lojinha.
-10. Novo bichinho.
+6. Mini-jogo.
+7. Estatísticas.
+8. Objetivos.
+9. Personalizar.
+10. Lojinha.
+11. Novo bichinho.
 
 O menu mostra até quatro opções por página e mantém a seleção ao reabrir. Telas auxiliares retornam à inicial após **20 segundos sem interação**.
 
@@ -214,6 +217,14 @@ O menu mostra até quatro opções por página e mantém a seleção ao reabrir.
 - `Ja esta no maximo`: comida, higiene ou saúde já está em 100 para aquela ação.
 - `Complete os objetivos`: há metas pendentes.
 - `Recompensa ja recebida`: prêmio daquele dia de uso já resgatado.
+
+### Mini-jogo “Ponto certo”
+
+Exige o pet acordado e energia mínima de 8. Um marcador amarelo percorre a barra e o botão **GPIO0** o para: se parar dentro da faixa colorida, é um acerto. São 3 rodadas, cada uma mais rápida e com faixa mais estreita; a posição da faixa é sorteada. Ao final: **−8 de energia**, **+5 de alegria mais 4 por acerto**, **+2 moedas por acerto** (+1 de bônus com 3 acertos) e +1 de vínculo. Segurar GPIO35 abandona o jogo sem prêmio nem custo; ficar 20 s sem tocar também.
+
+### Eventos aleatórios
+
+Entre 10 e 20 minutos de funcionamento, se o pet estiver acordado e na tela inicial, acontece um evento: **+3 moedas**, **carinho** (+10 de alegria, +1 de vínculo) ou **bagunça** (−15 de higiene). O aviso aparece sob o pet por alguns segundos. Se houver outra tela aberta, o evento é adiado.
 
 A tela inicial mostra somente nome, animação do pet e idade. A idade é apresentada em horas e minutos de funcionamento acumulado, por exemplo `Idade: 2h 15m`. A expressão comunica a situação; as estatísticas mostram os atributos exatos.
 
@@ -365,7 +376,11 @@ A primeira compra também equipa o item. Personalizar percorre “Nenhum” e os
 
 PWM usa canal 0, frequência de **5 kHz** e resolução de 8 bits no GPIO4. Esses valores são duty cycle, não uma medição de luminosidade ou consumo.
 
-Um botão restaura o brilho. Uma animação de cuidado em andamento impede a entrada em modo reduzido. A idade, os cuidados, a evolução e o salvamento continuam sendo processados. **Não há deep sleep** e o consumo elétrico ainda não foi medido na bancada.
+No modo reduzido o clock da CPU cai de 240 para **80 MHz**; o clock do SPI do display não muda. Um botão restaura brilho e clock. Uma animação de cuidado em andamento impede a entrada em modo reduzido. A idade, os cuidados, a evolução e o salvamento continuam sendo processados. **Não há deep sleep** e o consumo elétrico ainda não foi medido na bancada.
+
+### Light sleep (opcional)
+
+O ambiente `ttgo-virtual-pet-lowpower` (`pio run -e ttgo-virtual-pet-lowpower -t upload`) compila com `PET_LIGHT_SLEEP=1`: com a tela escurecida, o ESP32 faz light sleep entre quadros e acorda por GPIO0, GPIO35 ou pelo temporizador de 400 ms. `millis()` continua contando durante o sono, então a idade não é afetada. **Esse modo ainda não foi validado na placa** (em especial o PWM do backlight durante o sono); o ambiente padrão não o usa.
 
 ## 15. Persistência e migração
 
@@ -382,13 +397,15 @@ São armazenados:
 - Nome, cor, acessórios adquiridos e item equipado.
 - Dia de uso, progresso dos objetivos e marca de recompensa resgatada.
 
+Cada gravação também atualiza a chave **`crc`** (CRC-32 do blob). Ao iniciar, a chave **`backup`** (com **`bcrc`**) recebe uma cópia do último estado válido carregado. Saves anteriores à 2.1 não têm `crc` e continuam sendo aceitos.
+
 ### Quando grava
 
-- **3 segundos após a última alteração interativa**, como cuidado, carinho, compra ou personalização.
-- **A cada 5 minutos**, mesmo sem interação.
-- Ao concluir a migração do formato antigo.
+- **3 segundos após a última alteração interativa**, como cuidado, carinho, compra, personalização ou fim do mini-jogo.
+- **A cada 60 segundos**, mesmo sem interação, mas **somente se o estado mudou** desde a última gravação (o tempo passando muda a idade, então na prática grava uma vez por minuto com o pet ligado).
+- Ao concluir a migração do formato antigo, restaurar backup ou usar `restore`.
 
-Alterações consecutivas adiam a gravação após ação. Desligar antes do próximo salvamento pode perder progresso recente. Animações e tela atual não são persistidas; o boot normal abre a tela inicial.
+O tempo só corre com a placa ligada (não há RTC nem Wi-Fi/NTP): o pet não envelhece nem sente fome enquanto está desligado. Com o autosave de 60 s, desligar perde no máximo cerca de um minuto de progresso. Animações e tela atual não são persistidas; o boot normal abre a tela inicial.
 
 ### Migração 1.x → 2.0
 
@@ -400,9 +417,23 @@ O formato antigo ocupa 20 bytes no alvo ESP32. O código identifica esse layout,
 - Inicializa vínculo, nome, cor, acessórios e objetivos com os padrões da versão 2.
 - Salva o blob no novo formato.
 
-O firmware 1.x não entende o formato 2. Para manter o progresso, use atualização para a versão atual e evite downgrade/erase-flash. Não há exportação, backup ou restauração manual implementados.
+O firmware 1.x não entende o formato 2. Para manter o progresso, use atualização para a versão atual e evite downgrade/erase-flash. 
+### Validação, backup e cópia manual
 
-Estados atuais são validados ao carregar. Estado de formato 2 inválido é substituído pelo estado inicial; legado inválido ou tamanho não reconhecido gera falha de inicialização da NVS. Consulte o serial se aparecer `NVS=FAIL`.
+Ao carregar, o blob precisa ter o CRC correto e passar nas regras do bichinho. Se o estado principal for inválido, o firmware tenta a chave `backup` e avisa pela serial (`Save: estado principal invalido; tentando backup`). Só se o backup também falhar é criado um novo bichinho.
+
+Comandos digitados no monitor serial (115200 baud, terminar com Enter):
+
+| Comando | Efeito |
+| --- | --- |
+| `help` | Lista os comandos |
+| `status` | Idade (em `XhYYm`), moedas e atributos |
+| `dump` | Imprime `PET1:<hex>:<crc32>` com o estado completo |
+| `restore PET1:<hex>:<crc32>` | Valida CRC e regras, substitui o estado e grava na NVS |
+
+Guarde a linha do `dump` para recuperar o pet após um `erase-flash`.
+
+Estados atuais são validados ao carregar. Estado de formato 2 inválido é substituído pelo backup ou, na falta dele, pelo estado inicial; legado inválido ou tamanho não reconhecido gera falha de inicialização da NVS. Consulte o serial se aparecer `NVS=FAIL`.
 
 ## 16. Arquitetura e arquivos
 
@@ -411,9 +442,15 @@ ttgo-virtual-pet/
 ├── platformio.ini
 ├── README.md
 ├── include/
+│   ├── Config.h
 │   ├── pet/Pet.h
+│   ├── pet/MiniGame.h
 │   ├── input/Button.h
 │   ├── storage/Save.h
+│   ├── console/SerialConsole.h
+│   ├── power/Power.h
+│   ├── ui/Menu.h
+│   ├── util/Codec.h
 │   └── display/
 │       ├── Screen.h
 │       └── ActionAnimation.h
@@ -421,6 +458,7 @@ ttgo-virtual-pet/
 │   ├── main.cpp
 │   ├── pet/Pet.cpp
 │   ├── storage/Save.cpp
+│   ├── console/SerialConsole.cpp
 │   └── display/Screen.cpp
 ├── tests/pet_test.cpp
 ├── scripts/
@@ -435,9 +473,13 @@ ttgo-virtual-pet/
 | --- | --- |
 | `Pet` | Regras, estado, humores, crescimento, economia e objetivos |
 | `Button` | Debounce, clique ao soltar e gesto longo |
+| `MiniGame` | Rodadas, alvo, marcador e acertos do “Ponto certo” (sem dependência de hardware) |
+| `Save` | Leitura/gravação da NVS com CRC, backup e omissão de gravações idênticas |
+| `SerialConsole` | Comandos `help`, `status`, `dump` e `restore` |
+| `Codec` | CRC-32 e texto `PET1:` do backup |
+| `power` | Clock reduzido e light sleep opcional |
 | `ActionAnimation` | Duração/quadro/progresso de um cuidado, com tratamento do rollover de `millis()` |
 | `Screen` | Desenho do pet, telas auxiliares, animações e backlight |
-| `Save` | Validação, leitura, gravação e migração de NVS |
 | `main.cpp` | Navegação, cooldown de carinho, relógio de execução, salvamento e inatividade |
 
 ```mermaid
@@ -466,7 +508,7 @@ O firmware usa o loop Arduino e temporização por `millis()`, com `delay(1)` pa
 | Metas/recompensa e preços | `objectivesComplete()`, `claimReward()` e `buy()` |
 | Nomes, cores, desenhos e telas | `src/display/Screen.cpp` |
 | Duração das animações | `include/display/ActionAnimation.h` |
-| Intervalo de salvamento, carinho e inatividade | `src/main.cpp` |
+| Intervalos de salvamento, carinho, inatividade, eventos, brilho e clock | `include/Config.h` |
 | Pinos/driver/fontes e dependências | `platformio.ini` |
 
 Ao mudar a estrutura `PetState`, defina uma nova versão e uma migração explícita: o progresso é um blob binário, não um JSON independente do layout C++. Recompile, execute os testes e valide a placa após alterar regras ou desenho.
@@ -544,7 +586,7 @@ Gerar pacote distribuível:
 Saída:
 
 ```text
-dist/ttgo-virtual-pet-2.0.0.zip
+dist/ttgo-virtual-pet-2.1.0.zip
 ```
 
 O script inclui fontes, headers, testes, scripts, documentação e `platformio.ini`; inclui `firmware.bin` quando ele já existe. Caches `.pio`, configurações `.vscode` e diretório `dist` não entram no pacote. O Git ignora os artefatos gerados.
@@ -562,7 +604,7 @@ O nome do ZIP é definido no script, não deduzido do código. Ao publicar outra
 | Botão longo não executa toque | Comportamento previsto: o gesto longo suprime o clique ao soltar |
 | Placa fica no bootloader | Solte GPIO0 e reinicie; não manter esse botão pressionado ao ligar |
 | Upload não abre COM3 | Confirme a porta com `pio device list`; feche monitores/terminais que a utilizem |
-| Serial mostra outro firmware | Abra a pasta deste projeto e faça Upload; conferir `TTGO Virtual Pet 2.0.0` no boot |
+| Serial mostra outro firmware | Abra a pasta deste projeto e faça Upload; conferir `TTGO Virtual Pet 2.1.0` no boot |
 | Não consegue alimentar | Pet precisa estar acordado, ter comida <100 e pelo menos uma moeda |
 | Não consegue brincar | Acorde e recupere energia até pelo menos 10 |
 | Banho/remédio recusado | O atributo correspondente já pode estar em 100; remédio também requer duas moedas |
@@ -579,10 +621,10 @@ O nome do ZIP é definido no script, não deduzido do código. Ao publicar outra
 
 - Tempo e objetivos são baseados apenas no período com a placa ligada.
 - Nomes e cores vêm de listas; não há teclado/editor livre.
-- Não há som, sensor de toque, leitura de bateria ou controle por celular.
+- Não há som (nenhum buzzer ligado), sensor de toque, leitura de bateria ou controle por celular.
 - Não há Wi-Fi, MQTT, APIs, OTA ou backend neste projeto.
-- Modo econômico reduz brilho/renderização; não suspende o ESP32 em deep sleep.
-- Formato NVS é binário e ligado ao layout C++/versão do alvo; sem exportação automática.
+- Modo econômico reduz brilho, renderização e clock; light sleep é opcional e não validado; não há deep sleep.
+- Formato NVS é binário e ligado ao layout C++/versão do alvo; backup é manual (`dump`/`restore`).
 - A evolução adulta usa uma forma/paleta escolhida no momento da transição.
 - Qualidade visual e consumo elétrico dependem da validação física na unidade usada.
 
@@ -593,6 +635,7 @@ O nome do ZIP é definido no script, não deduzido do código. Ao publicar outra
 | 1.0.0 | Pet inicial, atributos, moedas, cuidados, idade e NVS |
 | 1.1.0 | Animações específicas de comer, brincar, banho e remédio |
 | 2.0.0 | Tela inicial limpa com nome e idade, vínculo/humores, evolução por cuidados, objetivos, personalização, acessórios, brilho por inatividade e migração do estado |
+| 2.1.0 | CRC e backup na NVS, gravação só quando há mudança, autosave de 60 s, `dump`/`restore` pela serial, mini-jogo “Ponto certo”, eventos aleatórios, clock reduzido na inatividade, light sleep opcional, idade em horas e minutos também nas estatísticas, `main.cpp` dividido por tela e constantes em `Config.h` |
 
 Referências técnicas:
 
@@ -600,7 +643,7 @@ Referências técnicas:
 - [TFT_eSPI: configuração Setup25 da TTGO T-Display](https://github.com/Bodmer/TFT_eSPI/blob/master/User_Setups/Setup25_TTGO_T_Display.h).
 - [PlatformIO: plataforma Espressif32](https://docs.platformio.org/en/latest/platforms/espressif32.html).
 
-A implementação deste repositório é a referência para as regras do jogo. As instruções e valores acima correspondem ao firmware 2.0.0.
+A implementação deste repositório é a referência para as regras do jogo. As instruções e valores acima correspondem ao firmware 2.1.0.
 
 ### Ilustrações do manual
 

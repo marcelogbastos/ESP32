@@ -4,8 +4,11 @@
 class Save {
  public:
   bool begin(Pet& pet);
-  bool write(const Pet& pet);
+  // Skips the flash write when nothing changed since the last write, unless forced.
+  bool write(const Pet& pet, bool force = false);
  private:
   Preferences preferences_;
-  bool ready_ = false;
+  PetState last_;
+  bool ready_ = false, hasLast_ = false;
+  bool load(const char* key, const char* crcKey, PetState& value);
 };

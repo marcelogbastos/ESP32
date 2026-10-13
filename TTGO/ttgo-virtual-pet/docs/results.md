@@ -14,3 +14,7 @@ Cuidados com animacoes independentes de temporizacao: comer, brincar, banho e re
 ## Versao 2.0 — 13/10/2026
 
 Build aprovado: imagem 328.993 bytes, RAM estatica 22.428 bytes (6,8%), sprite dinamico 32.400 bytes. Testes C++ aprovados para migracao v1, preservacao de idade/moedas/atributos/sono, humores, evolucao condicionada a cuidados, variantes adultas, objetivos, resgate unico, troca de dia ligado, compras sem cobranca duplicada, personalizacao e duracao de animacoes. Home possui somente personagem e efeitos; controles em telas auxiliares. PWM e aparencia final precisam de validacao na placa. Firmware nao foi gravado automaticamente.
+
+## Versao 2.1 — 13/10/2026
+
+Builds aprovados: `ttgo-virtual-pet` (imagem 334.861 bytes, RAM estatica 22.764 bytes) e `ttgo-virtual-pet-lowpower` (imagem 352.737 bytes, RAM estatica 24.092 bytes). Testes C++ (compilados no host com clang via zig) aprovados, incluindo eventos, recompensas e rodadas do mini-jogo, CRC-32, texto de backup e zeragem de bytes reservados. Nao executado na placa: tela do mini-jogo, console serial, light sleep e NVS com CRC/backup. Firmware nao foi gravado automaticamente.

@@ -31,3 +31,14 @@ Display, persistência na NVS e gestos físicos precisam da validação após up
 - [ ] Evolucao por cuidados recebe comemoracao; humores refletem as necessidades.
 
 - [ ] Trocar nome em Personalizar atualiza o nome na tela inicial; idade aumenta apos um minuto e permanece apos salvamento/reset.
+
+## Versao 2.1
+
+- [ ] Estatisticas mostram a idade em horas e minutos (ex.: `Idade 2h 15m`) e as moedas na linha de baixo, sem cortar o texto.
+- [ ] Menu de cuidados mostra 11 itens; "Mini-jogo" abre a tela "PONTO CERTO"; GPIO0 para o marcador; 3 rodadas e retorno a inicial com mensagem `N/3 acertos!`.
+- [ ] Mini-jogo recusado com pet dormindo ou energia abaixo de 8; segurar GPIO35 sai sem custo.
+- [ ] Evento aleatorio aparece sob o pet na tela inicial em 10 a 20 minutos e nao ocorre com o pet dormindo.
+- [ ] Serial: `status`, `dump` e `restore` funcionam; `restore` com CRC alterado e recusado.
+- [ ] Reiniciar sem alterar nada nao quebra o progresso; apos ~1 minuto ligado a idade salva avanca.
+- [ ] Brilho/clock reduzidos apos 45 s e restaurados no toque; botoes continuam respondendo.
+- [ ] Ambiente `ttgo-virtual-pet-lowpower`: botoes acordam a placa, backlight continua escurecido (nao apagado) durante o sono e a idade segue correta.

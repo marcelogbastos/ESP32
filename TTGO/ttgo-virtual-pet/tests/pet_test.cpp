@@ -1,5 +1,7 @@
 #include "pet/Pet.h"
 #include "display/ActionAnimation.h"
+#include "pet/MiniGame.h"
+#include "util/Codec.h"
 #if defined(__wasm__)
 extern "C" void* memcpy(void* target, const void* source, unsigned long size) {
   auto* out = static_cast<unsigned char*>(target); auto* in = static_cast<const unsigned char*>(source);
@@ -67,5 +69,43 @@ extern "C" int main() {
   migrated = pet.state(); migrated.name = 8; CHECK(!pet.restore(migrated));
   legacy.health = 101; CHECK(!pet.migrate(legacy));
   PetState rich; rich.coins = 9998; CHECK(pet.restore(rich)); pet.act(Action::Play); CHECK(pet.state().coins == 9999);
+  // Random events.
+  pet.reset(); pet.act(Action::Sleep); CHECK(!pet.applyEvent(Event::FoundCoins)); CHECK(pet.canPlayGame() == Result::Asleep); pet.act(Action::Sleep);
+  CHECK(pet.applyEvent(Event::FoundCoins) && pet.state().coins == 13);
+  CHECK(pet.applyEvent(Event::Mess) && pet.state().hygiene == 65);
+  CHECK(pet.applyEvent(Event::Cuddle) && pet.state().joy == 90 && pet.state().bond == 21);
+  CHECK(!pet.applyEvent(Event::Count));
+  // Mini-game rewards.
+  PetState tired; tired.energy = 7; CHECK(pet.restore(tired)); CHECK(pet.canPlayGame() == Result::NoEnergy);
+  pet.finishGame(3); CHECK(pet.state().energy == 7 && pet.state().coins == 10); // Refused game gives nothing.
+  pet.reset(); pet.finishGame(3); CHECK(pet.state().energy == 72 && pet.state().joy == 97 && pet.state().coins == 17 && pet.state().plays == 1);
+  pet.reset(); pet.finishGame(9); CHECK(pet.state().coins == 17); // Hits are clamped.
+  pet.reset(); pet.finishGame(0); CHECK(pet.state().coins == 10 && pet.state().joy == 85);
+  // Mini-game rounds: seed 0x0a0a gives targets 30, 30, 20.
+  MiniGame game;
+  CHECK(!game.active() && !game.finished()); game.start(1000, 0x0a0a);
+  CHECK(game.active() && game.round() == 0 && game.target() == 30 && game.width() == 12);
+  CHECK(game.cursor(1000) == 0 && game.cursor(1350) == 50 && game.cursor(1700) == 100 && game.cursor(2050) == 50); // Period 1400 ms.
+  game.press(1210); CHECK(game.revealing() && game.hits() == 1 && game.lastHit() && game.cursor(9999) == 30);
+  game.press(1300); CHECK(game.hits() == 1);
+  game.update(2009); CHECK(game.revealing()); game.update(2010); CHECK(!game.revealing() && game.round() == 1 && game.width() == 10);
+  game.press(2585); CHECK(game.revealing() && !game.lastHit() && game.hits() == 1); // Round 1 period is 1150 ms; 575 ms is the far end.
+  game.update(3385); CHECK(game.round() == 2 && game.target() == 20 && game.width() == 8);
+  game.press(3385 + 90); CHECK(game.lastHit() && game.hits() == 2);
+  game.update(3475 + 800); CHECK(game.finished() && !game.active() && game.hits() == 2);
+  game.stop(); CHECK(!game.finished());
+  // Backup text, CRC and reserved bytes.
+  uint8_t digits[9] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+  CHECK(codec::crc32(digits, 9) == 0xcbf43926u);
+  pet.reset(); pet.act(Action::Play); pet.advance(600); pet.buy(1);
+  char text[codec::backupSize(sizeof(PetState))];
+  CHECK(codec::encodeBackup(reinterpret_cast<const uint8_t*>(&pet.state()), sizeof(PetState), text, sizeof(text)));
+  CHECK(!codec::encodeBackup(reinterpret_cast<const uint8_t*>(&pet.state()), sizeof(PetState), text, sizeof(text) - 1));
+  PetState copy;
+  CHECK(codec::decodeBackup(text, reinterpret_cast<uint8_t*>(&copy), sizeof(copy)));
+  Pet other; CHECK(other.restore(copy) && other.state().coins == pet.state().coins && other.state().ageMinutes == 10 && other.state().accessory == 1);
+  text[10] = text[10] == '0' ? '1' : '0'; CHECK(!codec::decodeBackup(text, reinterpret_cast<uint8_t*>(&copy), sizeof(copy)));
+  CHECK(!codec::decodeBackup("PET1:00", reinterpret_cast<uint8_t*>(&copy), sizeof(copy)));
+  PetState padded; padded.reserved[0] = 7; padded.reserved[2] = 9; CHECK(pet.restore(padded)); CHECK(!pet.state().reserved[0] && !pet.state().reserved[2]);
   return 0;
 }

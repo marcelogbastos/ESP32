@@ -4,6 +4,7 @@ constexpr uint16_t bg = 0x0843, panel = 0x1927, teal = 0x4ed9, muted = 0x9cd3;
 const char* names[] = {"Pip", "Nino", "Luma", "Bibi", "Kiko", "Tico", "Lilo", "Mimi"};
 const char* colors[] = {"Evolucao", "Rosa", "Azul", "Verde", "Amarelo", "Roxo"};
 const char* accessories[] = {"Nenhum", "Coleira", "Laco", "Chapeu"};
+String formatAge(uint32_t minutes) { return String(minutes / 60) + "h " + (minutes % 60) + "m"; }
 const char* moods[] = {"Tranquilo", "Feliz", "Com fome", "Cansado", "Sujo", "Triste", "Doente", "Dormindo", "Carinhoso"};
 }
 bool Screen::begin() {
@@ -150,7 +151,7 @@ void Screen::character(const Pet& pet, uint32_t now) {
   }
 
 }
-void Screen::draw(const Pet& pet, View view, uint8_t selection, uint8_t focus, const char* message, uint32_t now) {
+void Screen::draw(const Pet& pet, View view, uint8_t selection, uint8_t focus, const char* message, const MiniGame& game, uint32_t now) {
   if (!ready_) return;
   const PetState& state = pet.state();
   frame_.resetViewport(); frame_.fillSprite(bg);
@@ -161,17 +162,17 @@ void Screen::draw(const Pet& pet, View view, uint8_t selection, uint8_t focus, c
     frame_.setViewport(58, 0, 124, 135, true);
     character(pet, now); frame_.resetViewport();
     frame_.setTextColor(muted);
-    String age = String("Idade: ") + (state.ageMinutes / 60) + "h " + (state.ageMinutes % 60) + "m";
-    frame_.drawCentreString(age, 120, 120, 1);
+    frame_.drawCentreString(String("Idade: ") + formatAge(state.ageMinutes), 120, 120, 1);
+    if (message[0]) { frame_.setTextColor(teal); frame_.drawCentreString(message, 120, 108, 1); }
     frame_.pushSprite(0, 0); return;
   }
   frame_.fillRect(0, 0, 240, 24, panel);
-  const char* titles[] = {"", "CUIDADOS", "ESTATISTICAS", "OBJETIVOS", "PERSONALIZAR", "LOJINHA", "NOVO BICHINHO"};
+  const char* titles[] = {"", "CUIDADOS", "ESTATISTICAS", "OBJETIVOS", "PERSONALIZAR", "LOJINHA", "NOVO BICHINHO", "PONTO CERTO"};
   label(8, 4, titles[static_cast<uint8_t>(view)], teal, 2);
   if (view == View::Care) {
-    const char* actions[] = {"Comida -1 moeda", "Brincar +2 moedas", "Banho", state.sleeping ? "Acordar" : "Dormir", "Remedio -2 moedas", "Estatisticas", "Objetivos", "Personalizar", "Lojinha", "Novo bichinho"};
+    const char* actions[] = {"Comida -1 moeda", "Brincar +2 moedas", "Banho", state.sleeping ? "Acordar" : "Dormir", "Remedio -2 moedas", "Mini-jogo", "Estatisticas", "Objetivos", "Personalizar", "Lojinha", "Novo bichinho"};
     uint8_t start = selection / 4 * 4;
-    for (int i = start; i < 10 && i < start + 4; ++i) {
+    for (int i = start; i < kMenuCount && i < start + 4; ++i) {
       int y = 29 + (i - start) * 21;
       if (i == selection) frame_.fillRoundRect(5, y, 230, 20, 4, panel);
       label(10, y + 2, String(i == selection ? "> " : "  ") + actions[i], i == selection ? TFT_YELLOW : TFT_WHITE, 2);
@@ -180,7 +181,8 @@ void Screen::draw(const Pet& pet, View view, uint8_t selection, uint8_t focus, c
     bar(10, 31, "Comida", state.food); bar(10, 55, "Energia", state.energy); bar(10, 79, "Alegria", state.joy);
     bar(133, 31, "Higiene", state.hygiene); bar(133, 55, "Saude", state.health); bar(133, 79, "Vinculo", state.bond);
     label(10, 103, String(names[state.name]) + " " + moods[static_cast<uint8_t>(pet.mood())], teal);
-    label(133, 103, String(state.ageMinutes) + "m " + state.coins + " moedas", muted);
+    label(133, 103, String("Idade ") + formatAge(state.ageMinutes), muted);
+    label(133, 113, String(state.coins) + " moedas", muted);
   } else if (view == View::Objectives) {
     label(10, 30, String("Dia ligado ") + (state.day + 1), muted);
     label(10, 44, String("Alimentar: ") + state.feedsToday + "/2");
@@ -197,10 +199,18 @@ void Screen::draw(const Pet& pet, View view, uint8_t selection, uint8_t focus, c
     label(10, 34, String("Moedas: ") + state.coins, muted);
     for (int i = 1; i <= 3; ++i)
       label(10, 49 + (i - 1) * 22, String(i == focus ? "> " : "  ") + accessories[i] + ((state.owned & (1u << i)) ? " (equipar)" : " - " + String(prices[i])), i == focus ? TFT_YELLOW : TFT_WHITE, 2);
+  } else if (view == View::Game) {
+    uint8_t target = game.target(), width = game.width();
+    frame_.fillRoundRect(20, 60, 200, 22, 4, panel);
+    frame_.fillRect(20 + (target - width) * 2, 60, width * 4 + 1, 22, game.revealing() ? (game.lastHit() ? TFT_GREEN : TFT_RED) : teal);
+    int x = 20 + game.cursor(now) * 2;
+    frame_.fillRect(x - 2, 54, 5, 34, TFT_YELLOW);
+    label(10, 32, String("Rodada ") + (game.round() + 1) + "/" + int(MiniGame::kRounds) + "  Acertos " + game.hits(), muted);
+    label(10, 100, game.revealing() ? (game.lastHit() ? "Acertou!" : "Quase!") : "0: parar no ponto certo", game.revealing() ? TFT_YELLOW : TFT_WHITE);
   } else if (view == View::ConfirmReset) {
     label(10, 39, "Reiniciar o progresso?", TFT_YELLOW, 2);
     label(10, 73, "35 cancela / 0 confirma", teal);
   }
-  if (view != View::ConfirmReset) label(8, 123, message[0] ? message : "35 proximo | 0 OK | segure: voltar", muted);
+  if (view != View::ConfirmReset && view != View::Game) label(8, 123, message[0] ? message : "35 proximo | 0 OK | segure: voltar", muted);
   frame_.pushSprite(0, 0);
 }

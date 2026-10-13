@@ -97,6 +97,14 @@ Escolha **Brincar**. A alegria aumenta em até **18 pontos**, ele gasta **10 de 
 
 O pet precisa estar acordado e ter pelo menos 10 de energia. Na animação, ele salta e brinca com uma bola.
 
+### Mini-jogo “Ponto certo”
+
+Escolha **Mini-jogo**. Um marcador amarelo vai e volta pela barra; aperte o botão de ação (**0**) para pará-lo dentro da faixa colorida. São 3 rodadas, cada uma mais rápida e com a faixa menor. Cada acerto rende **2 moedas** (com os 3 acertos, mais 1), e o pet fica mais alegre. Custa **8 de energia** e exige o pet acordado. Segure o botão **35** para desistir sem custo.
+
+### Eventos
+
+De vez em quando, com o pet acordado na tela inicial, aparece um aviso sob ele: ele pode achar **3 moedas**, ganhar um **carinho** ou fazer **bagunça** (a higiene cai um pouco).
+
 ### Dar banho
 
 Escolha **Banho**. É gratuito, aumenta a higiene em até **30 pontos** e consome **2 de energia**. Se a higiene já estiver em 100, o banho será recusado.
