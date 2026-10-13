@@ -1,0 +1,12 @@
+.pio/
+.pio-core/
+.build-tools/
+.vscode/
+dist/
+__pycache__/
+*.pyc
+secrets.h
+.env
+.env.*
+!.env.example
+PROJETO-MOVIDO.txt
