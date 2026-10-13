@@ -6,12 +6,11 @@
 #include "display/Screen.h"
 #include "input/Button.h"
 #include "console/SerialConsole.h"
-#include "power/Power.h"
 namespace {
 Pet pet; Save save; Screen screen; SerialConsole console; MiniGame game; Button nextButton, actionButton;
 View view = View::Home;
 uint8_t selection = 0, focus = 0, shop = 1;
-bool pendingSave = false, dimmed = false;
+bool pendingSave = false;
 uint32_t lastSecond = 0, lastFrame = 0, lastSave = 0, lastAction = 0, messageAt = 0, lastInput = 0, lastPetting = 0, nextEvent = 0;
 char message[40] = "";
 void say(const char* value, uint32_t now) { strlcpy(message, value, sizeof(message)); messageAt = now; }
@@ -142,18 +141,10 @@ void loop() {
     if (!save.write(pet)) { say("Falha ao salvar NVS", now); Serial.println("Pet: falha NVS"); }
     pendingSave = false; lastSave = now;
   }
-  uint32_t idle = now - lastInput;
-  if (view != View::Home && idle >= config::kReturnHomeMs) { goHome(); message[0] = 0; }
-  bool wantDim = idle >= config::kDimAfterMs && !screen.animating(now);
-  if (wantDim != dimmed) {
-    dimmed = wantDim; screen.brightness(dimmed ? config::kDimBrightness : config::kBrightness); power::setLowPower(dimmed);
-  }
+  if (view != View::Home && now - lastInput >= config::kReturnHomeMs) { goHome(); message[0] = 0; }
   if (message[0] && uint32_t(now - messageAt) > config::kMessageMs) message[0] = 0;
-  uint32_t period = dimmed && !screen.animating(now) ? config::kDimFrameMs : config::kFrameMs;
-  if (uint32_t(now - lastFrame) >= period) {
+  if (uint32_t(now - lastFrame) >= config::kFrameMs) {
     lastFrame = now; screen.draw(pet, view, selection, view == View::Shop ? shop : focus, message, game, now);
   }
-  uint32_t sinceFrame = uint32_t(millis() - lastFrame);
-  if (dimmed && !screen.animating(now)) power::idle(sinceFrame >= period ? 0 : period - sinceFrame);
-  else delay(1);
+  delay(1);
 }

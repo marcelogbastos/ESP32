@@ -17,4 +17,4 @@ Build aprovado: imagem 328.993 bytes, RAM estatica 22.428 bytes (6,8%), sprite d
 
 ## Versao 2.1 — 13/10/2026
 
-Builds aprovados: `ttgo-virtual-pet` (imagem 334.861 bytes, RAM estatica 22.764 bytes) e `ttgo-virtual-pet-lowpower` (imagem 352.737 bytes, RAM estatica 24.092 bytes). Testes C++ (compilados no host com clang via zig) aprovados, incluindo eventos, recompensas e rodadas do mini-jogo, CRC-32, texto de backup e zeragem de bytes reservados. Nao executado na placa: tela do mini-jogo, console serial, light sleep e NVS com CRC/backup. Firmware nao foi gravado automaticamente.
+Builds aprovados: `ttgo-virtual-pet` (imagem 334.861 bytes, RAM estatica 22.764 bytes). Testes C++ (compilados no host com clang via zig) aprovados, incluindo eventos, recompensas e rodadas do mini-jogo, CRC-32, texto de backup e zeragem de bytes reservados. Nao executado na placa: tela do mini-jogo, console serial e NVS com CRC/backup. Firmware nao foi gravado automaticamente.

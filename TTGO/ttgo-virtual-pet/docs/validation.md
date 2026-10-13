@@ -40,5 +40,3 @@ Display, persistência na NVS e gestos físicos precisam da validação após up
 - [ ] Evento aleatorio aparece sob o pet na tela inicial em 10 a 20 minutos e nao ocorre com o pet dormindo.
 - [ ] Serial: `status`, `dump` e `restore` funcionam; `restore` com CRC alterado e recusado.
 - [ ] Reiniciar sem alterar nada nao quebra o progresso; apos ~1 minuto ligado a idade salva avanca.
-- [ ] Brilho/clock reduzidos apos 45 s e restaurados no toque; botoes continuam respondendo.
-- [ ] Ambiente `ttgo-virtual-pet-lowpower`: botoes acordam a placa, backlight continua escurecido (nao apagado) durante o sono e a idade segue correta.

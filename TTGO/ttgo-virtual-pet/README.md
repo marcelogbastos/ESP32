@@ -25,7 +25,7 @@ Leia o [Manual ilustrado do usuário](docs/manual-do-usuario.md): primeiros pass
 - [11. Evolução](#11-evolução)
 - [12. Objetivos e recompensas](#12-objetivos-e-recompensas)
 - [13. Personalização e lojinha](#13-personalização-e-lojinha)
-- [14. Economia de energia](#14-economia-de-energia)
+- [14. Backlight](#14-backlight)
 - [15. Persistência e migração](#15-persistência-e-migração)
 - [16. Arquitetura e arquivos](#16-arquitetura-e-arquivos)
 - [17. Ajustar as regras](#17-ajustar-as-regras)
@@ -51,7 +51,6 @@ Leia o [Manual ilustrado do usuário](docs/manual-do-usuario.md): primeiros pass
 | Mini-jogo | “Ponto certo”: três rodadas de timing que rendem moedas e alegria |
 | Eventos | A cada 10–20 minutos acordado, na tela inicial: achar moedas, ganhar carinho ou fazer bagunça |
 | Persistência | Progresso salvo na NVS com CRC e backup; migração de versões 1.x; `dump`/`restore` pela serial |
-| Economia | Redução de brilho, renderização e clock da CPU por inatividade; light sleep opcional |
 
 Não há morte permanente: mesmo com saúde zero, o pet pode ser recuperado com cuidados.
 
@@ -366,21 +365,9 @@ Automática pela evolução, rosa, azul, verde, amarelo e roxo. Alterar a cor n�
 
 A primeira compra também equipa o item. Personalizar percorre “Nenhum” e os acessórios já adquiridos; itens não comprados aparecem na lojinha. Compras e item equipado permanecem salvos. “Novo bichinho” reinicia também essas aquisições.
 
-## 14. Economia de energia
+## 14. Backlight
 
-| Parâmetro | Uso normal | Após 45 s sem interação |
-| --- | --- | --- |
-| PWM do backlight | 180/255 | 35/255 |
-| Intervalo de renderização | 100 ms | 400 ms |
-| Frequência aproximada | 10 quadros/s | 2,5 quadros/s |
-
-PWM usa canal 0, frequência de **5 kHz** e resolução de 8 bits no GPIO4. Esses valores são duty cycle, não uma medição de luminosidade ou consumo.
-
-No modo reduzido o clock da CPU cai de 240 para **80 MHz**; o clock do SPI do display não muda. Um botão restaura brilho e clock. Uma animação de cuidado em andamento impede a entrada em modo reduzido. A idade, os cuidados, a evolução e o salvamento continuam sendo processados. **Não há deep sleep** e o consumo elétrico ainda não foi medido na bancada.
-
-### Light sleep (opcional)
-
-O ambiente `ttgo-virtual-pet-lowpower` (`pio run -e ttgo-virtual-pet-lowpower -t upload`) compila com `PET_LIGHT_SLEEP=1`: com a tela escurecida, o ESP32 faz light sleep entre quadros e acorda por GPIO0, GPIO35 ou pelo temporizador de 400 ms. `millis()` continua contando durante o sono, então a idade não é afetada. **Esse modo ainda não foi validado na placa** (em especial o PWM do backlight durante o sono); o ambiente padrão não o usa.
+O backlight usa PWM no GPIO4 (canal 0, 5 kHz, 8 bits) com brilho fixo de 180/255. A antiga economia de energia (redução de brilho, renderização e clock, além do light sleep) foi removida porque a tela piscava.
 
 ## 15. Persistência e migração
 
@@ -477,7 +464,6 @@ ttgo-virtual-pet/
 | `Save` | Leitura/gravação da NVS com CRC, backup e omissão de gravações idênticas |
 | `SerialConsole` | Comandos `help`, `status`, `dump` e `restore` |
 | `Codec` | CRC-32 e texto `PET1:` do backup |
-| `power` | Clock reduzido e light sleep opcional |
 | `ActionAnimation` | Duração/quadro/progresso de um cuidado, com tratamento do rollover de `millis()` |
 | `Screen` | Desenho do pet, telas auxiliares, animações e backlight |
 | `main.cpp` | Navegação, cooldown de carinho, relógio de execução, salvamento e inatividade |
@@ -623,7 +609,7 @@ O nome do ZIP é definido no script, não deduzido do código. Ao publicar outra
 - Nomes e cores vêm de listas; não há teclado/editor livre.
 - Não há som (nenhum buzzer ligado), sensor de toque, leitura de bateria ou controle por celular.
 - Não há Wi-Fi, MQTT, APIs, OTA ou backend neste projeto.
-- Modo econômico reduz brilho, renderização e clock; light sleep é opcional e não validado; não há deep sleep.
+- Não há modo de economia de energia nem deep sleep.
 - Formato NVS é binário e ligado ao layout C++/versão do alvo; backup é manual (`dump`/`restore`).
 - A evolução adulta usa uma forma/paleta escolhida no momento da transição.
 - Qualidade visual e consumo elétrico dependem da validação física na unidade usada.
@@ -635,7 +621,7 @@ O nome do ZIP é definido no script, não deduzido do código. Ao publicar outra
 | 1.0.0 | Pet inicial, atributos, moedas, cuidados, idade e NVS |
 | 1.1.0 | Animações específicas de comer, brincar, banho e remédio |
 | 2.0.0 | Tela inicial limpa com nome e idade, vínculo/humores, evolução por cuidados, objetivos, personalização, acessórios, brilho por inatividade e migração do estado |
-| 2.1.0 | CRC e backup na NVS, gravação só quando há mudança, autosave de 60 s, `dump`/`restore` pela serial, mini-jogo “Ponto certo”, eventos aleatórios, clock reduzido na inatividade, light sleep opcional, idade em horas e minutos também nas estatísticas, `main.cpp` dividido por tela e constantes em `Config.h` |
+| 2.1.0 | CRC e backup na NVS, gravação só quando há mudança, autosave de 60 s, `dump`/`restore` pela serial, mini-jogo “Ponto certo”, eventos aleatórios, idade em horas e minutos também nas estatísticas, `main.cpp` dividido por tela e constantes em `Config.h` |
 
 Referências técnicas:
 
