@@ -1,6 +1,6 @@
 #pragma once
 #include <stdint.h>
-enum class Expression : uint8_t { Normal, Happy, Laugh, Sad, Angry, Surprise, Wink, Sleep, Love, Stars, Cool, Error, Count };
+enum class Expression : uint8_t { Normal, Happy, VeryHappy, Laugh, Angry, Furious, Sad, Crying, Surprise, Scared, Sleepy, Sleep, Wink, Curious, Thinking, Suspicious, Confused, Shy, Affectionate, Excited, Bored, Focused, Worried, Mischievous, Count };
 class FaceState {
  public:
   Expression expression = Expression::Normal;
@@ -20,3 +20,5 @@ class FaceState {
     return phase < 4000 ? 1.0f - (phase - 3900) / 100.0f : (phase - 4000) / 100.0f;
   }
 };
+
+
