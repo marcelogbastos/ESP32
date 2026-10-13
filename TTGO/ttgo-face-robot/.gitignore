@@ -3,3 +3,4 @@
 .vscode/
 dist/
 __pycache__/
+include/secrets.h

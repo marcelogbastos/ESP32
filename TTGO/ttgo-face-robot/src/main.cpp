@@ -2,6 +2,7 @@
 #include <TFT_eSPI.h>
 #include "input/Button.h"
 #include "faces/FaceRenderer.h"
+#include "web/WebControl.h"
 namespace {
 TFT_eSPI display;
 TFT_eSprite frame(&display);
@@ -24,8 +25,10 @@ void setup() {
   Serial.printf("TTGO Face Robot 1.1.1 / ESP32 classico / sprite=%s\n",ready?"OK":"FAIL");
   if(!ready) { display.fillScreen(TFT_BLACK); display.setTextColor(TFT_RED); display.drawString("Falha de memoria",10,55,2); }
   report();
+  WebControl::begin(state);
 }
 void loop() {
+  WebControl::handle();
   uint32_t now=millis();
   ButtonEvent left=navigation.update(digitalRead(35)==LOW,now);
   ButtonEvent right=action.update(digitalRead(0)==LOW,now);
